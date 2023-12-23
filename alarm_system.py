@@ -10,6 +10,7 @@ from camera import Camera
 from motion_sensor import MotionSensor
 from sound_sensor import SoundSensor
 from face_detector import FaceDetector
+from email_sender import EmailSender
 
 
 logging.getLogger().setLevel(logging.INFO)
@@ -19,6 +20,11 @@ PIN_SOUND_SENSOR = 24
 FACE_DETECTOR_PATH = "haarcascades/haarcascade_frontalface_default.xml"
 MAX_THREADS_WORKERS = 5
 DATABASE_PATH = "report_database.db"
+SMTP_SERVER = 'smtp-relay.brevo.com'
+SMTP_PORT = 587
+SENDER_EMAIL = os.getenv('SENDER_EMAIL')
+SENDER_PASSWORD = os.getenv('SENDER_PASSWORD')
+RECIPIENT_EMAIL = os.getenv('RECIPIENT_EMAIL')
 
 
 class AlarmSystem:
@@ -26,9 +32,27 @@ class AlarmSystem:
         self.motion_sensor = MotionSensor(pin=PIN_MOTION_SENSOR)
         self.sound_sensor = SoundSensor(pin=PIN_SOUND_SENSOR)
         self.face_detector = FaceDetector(FACE_DETECTOR_PATH)
+        self.email_sender = EmailSender(
+            smtp_server=SMTP_SERVER,
+            smtp_port=SMTP_PORT,
+            sender_email=SENDER_EMAIL,
+            sender_password=SENDER_PASSWORD
+        )
         self.sound_detection_count = 0
         self.last_sound_detection_time = 0
         self.status = 0
+
+
+    def send_email(self, image_path: str, num_faces: int, date_time: str) -> None:
+        email_subject = f"[ALARM SYSTEM] Motion Detected {date_time}"
+        email_body = f"Alarm system detected motion. Number of Faces Detected: {num_faces}"
+        logging.info("Sending email")
+        self.email_sender.send_email_with_photo(
+            recipient_email=RECIPIENT_EMAIL,
+            subject = email_subject,
+            body = email_body,
+            photo_path=image_path
+        )
 
 
     def add_report(self, image_path: str, num_faces: int, date: str) -> None:
@@ -60,8 +84,8 @@ class AlarmSystem:
         if image_path:
             num_faces = self.detect_faces(image_path=image_path)
             self.add_report(image_path, num_faces, str(current_datetime))
-            
-            #os.remove(image_path)
+            self.send_email(image_path, num_faces, str(current_datetime))
+            os.remove(image_path)
     
     
     def _motion_detected(self, channel: int) -> None:
