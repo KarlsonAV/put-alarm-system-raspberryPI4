@@ -1,0 +1,101 @@
+.id
+{
+    width:10%;
+    float:left;
+    text-align:center;
+    height:100%; 
+}
+.pRaport
+{
+    padding-top:130px;
+}
+.foto
+{
+    width:64%;
+    float:left;
+    text-align: center;
+    height:100%;
+}
+.time
+{
+    width:25%;
+    float:left;
+    text-align:left;
+    height:100%; 
+}
+.incident0
+{
+    width:100%;
+    float:none;
+    height:300px;
+    background-color: lightsteelblue;
+}
+.incident1
+{
+    width:100%;
+    float:none;
+    height:300px;
+    background-color: rgb(113, 148, 192);
+}
+.incidents1
+{
+    width:100%;
+    float:none;
+    height:60px;
+    background-color: rgb(113, 148, 192);
+}
+.incidents0
+{
+    width:100%;
+    float:none;
+    height:60px;
+    background-color: lightsteelblue;
+}
+a:visited 
+{
+    color:black;
+    text-decoration: none;
+}
+a
+{
+    color:black;
+    text-decoration:none;
+}
+header
+{
+    text-align:center;
+    background-color:azure;
+}
+body
+{
+    background-color:azure;
+}
+main
+{
+    background-color:lightgray;
+}
+hr
+{
+    margin:0%;
+}
+.date
+{
+    width:10%;
+    float:left;
+    text-align:center;
+    height:100%; 
+}
+.info
+{
+    width:64%;
+    float:left;
+    text-align: center;
+    height:100%;
+}
+.buttons
+{
+    width:25%;
+    float:left;
+    text-align:left;
+    height:100%; 
+}
